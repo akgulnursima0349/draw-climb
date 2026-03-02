@@ -1,0 +1,502 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@600&display=swap');
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  user-select: none;
+}
+
+/* ===== SPLASH SCREEN ===== */
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #fff;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.065) 1px, transparent 1px);
+  background-size: 60px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.45s ease;
+}
+#splash.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(440px, 90vw);
+  text-align: center;
+  gap: 0;
+}
+
+/* -- Alt başlık -- */
+#splash-sub {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: #aaa;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  animation: splashUp 0.5s ease both 0.1s;
+}
+
+/* -- Ana başlık -- */
+#splash-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(68px, 20vw, 104px);
+  line-height: 0.86;
+  color: #111;
+  letter-spacing: 3px;
+  margin: 0 0 18px;
+  animation: splashUp 0.5s ease both 0.2s;
+}
+.splash-gradient {
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* -- Araba sahnesi -- */
+#splash-scene {
+  position: relative;
+  width: 100%;
+  height: 130px;
+  margin-bottom: 26px;
+  animation: splashUp 0.5s ease both 0.3s;
+}
+#splash-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#splash-road {
+  animation: drawRoad 1.1s ease-out forwards 0.55s;
+}
+@keyframes drawRoad {
+  to { stroke-dashoffset: 0; }
+}
+/* Araç wrapper — gövde + 2 tekerlek bir arada */
+#splash-car-wrap {
+  position: absolute;
+  width: 140px;
+  height: 75px;   /* gövde 60px + tekerlekler 15px aşağı taşar */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) rotate(-11deg);
+  filter: drop-shadow(4px 6px 14px rgba(0,0,0,0.18));
+  opacity: 0;
+  animation: carSlide 0.65s cubic-bezier(0.34,1.56,0.64,1) forwards 1.1s;
+}
+#splash-car-body {
+  position: absolute;
+  width: 140px;
+  height: 60px;  /* oyundaki drawH = CAR_H + 10 = 60 — açık height olmadan tarayıcı yanlış ölçekler */
+  top: 0;
+  left: 0;
+  z-index: 2;   /* gövde tekerleklerin üstünde (oyunla aynı render sırası) */
+}
+.splash-wheel {
+  position: absolute;
+  width: 36px;   /* WHEEL_VR * 2 = 18 * 2 */
+  height: 36px;
+  top: 30px;
+  z-index: 3;
+}
+/* wheel.png — ortada */
+.splash-wheel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+/* Beyaz iç daire — wheel.png'nin altında (oyunla aynı) */
+.splash-wheel::before {
+  content: '';
+  position: absolute;
+  width: 78%;    /* WHEEL_VR * 0.78 * 2 / 36 ≈ 78% */
+  height: 78%;
+  border-radius: 50%;
+  background: #fff;
+  top: 11%;
+  left: 11%;
+  z-index: 0;
+}
+/* Koyu halka + artı — wheel.png'nin üstünde */
+.splash-wheel::after {
+  content: '';
+  position: absolute;
+  width: 78%;
+  height: 78%;
+  border-radius: 50%;
+  border: 3px solid #111;
+  top: 11%;
+  left: 11%;
+  z-index: 2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cline x1='7.5' y1='14' x2='20.5' y2='14' stroke='%23222' stroke-width='2.2' stroke-linecap='round'/%3E%3Cline x1='14' y1='7.5' x2='14' y2='20.5' stroke='%23222' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+#splash-wheel-l { left: 31px; }
+#splash-wheel-r { left: 76px; }
+
+@keyframes carSlide {
+  from { opacity: 0; transform: translateX(calc(-50% - 180px)) rotate(-11deg); }
+  to   { opacity: 1; transform: translateX(-50%) rotate(-11deg); }
+}
+
+/* -- OYNA butonu -- */
+#btn-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 56px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px;
+  letter-spacing: 4px;
+  cursor: pointer;
+  box-shadow: 0 6px 28px rgba(22,163,74,0.42);
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  animation: splashUp 0.5s ease both 1.5s;
+  margin-bottom: 14px;
+}
+#btn-play:hover  { transform: scale(1.07); box-shadow: 0 8px 34px rgba(22,163,74,0.55); filter: brightness(1.07); }
+#btn-play:active { transform: scale(0.96); }
+
+/* -- Toplam yıldız -- */
+#splash-stars-row {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f8b000;
+  letter-spacing: 0.5px;
+  animation: splashUp 0.5s ease both 1.6s;
+  visibility: hidden;   /* yıldız yokken gizli */
+  min-height: 18px;
+}
+
+@keyframes splashUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CANVAS ===== */
+#game-canvas {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+/* ===== LEVEL INFO — orta üst ===== */
+#level-info {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #111;
+  letter-spacing: 2px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ===== CORNER BUTTONS ===== */
+.corner-btn {
+  position: fixed;
+  z-index: 10;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.corner-btn svg {
+  width: 26px;
+  height: 26px;
+}
+
+.corner-btn:hover  { transform: scale(1.08); filter: brightness(1.1); }
+.corner-btn:active { transform: scale(0.95); }
+
+/* Yeniden başlat — sol alt, kırmızı */
+.btn-reset {
+  bottom: 14px;
+  left: 14px;
+  background: #dc2626;
+  color: #fff;
+}
+.btn-reset svg { stroke: #fff; }
+
+/* Silgi — sol alt, sarı (reset'in yanında) */
+.btn-clear {
+  bottom: 14px;
+  left: 76px;
+  background: #eab308;
+  color: #fff;
+}
+.btn-clear svg { stroke: #fff; }
+
+/* Başlat — sağ alt, yeşil */
+.btn-start {
+  bottom: 14px;
+  right: 14px;
+  background: #16a34a;
+  color: #fff;
+  width: auto;
+  padding: 0 18px;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.btn-start svg { fill: #fff; width: 18px; height: 18px; }
+
+/* ===== HINT BOX ===== */
+#hint-box {
+  position: fixed;
+  bottom: 82px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 9px 20px;
+  background: rgba(0,0,0,0.72);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none;
+  max-width: 420px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 11;
+}
+
+#hint-box.visible { opacity: 1; }
+
+/* ===== TOTAL STARS HUD ===== */
+#total-stars-hud {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.75);
+  color: #f8b000;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
+
+/* ===== MODAL ===== */
+#modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#modal-overlay.hidden { display: none; }
+
+#modal {
+  background: #fff;
+  border-radius: 22px;
+  padding: 0 0 32px;
+  text-align: center;
+  box-shadow: 0 16px 60px rgba(0,0,0,0.28);
+  animation: modalPop 0.36s cubic-bezier(0.34,1.56,0.64,1);
+  min-width: 300px;
+  overflow: hidden;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.7) translateY(20px); opacity: 0; }
+  to   { transform: scale(1)   translateY(0);    opacity: 1; }
+}
+
+/* -- Modal gradient header -- */
+#modal-header {
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 55%, #a855f7 100%);
+  padding: 28px 40px 22px;
+  position: relative;
+  overflow: hidden;
+}
+#modal-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.25) 0%, transparent 70%);
+}
+#modal-header-emoji {
+  font-size: 46px;
+  line-height: 1;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+#modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  position: relative;
+}
+
+/* -- Stars row -- */
+#modal-stars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: -20px 0 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.m-star {
+  font-size: 54px;
+  line-height: 1;
+  color: #ddd;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  display: inline-block;
+  transform: scale(0.8);
+  opacity: 0.35;
+}
+
+.m-star.earned {
+  color: #f8b000;
+  opacity: 1;
+  transform: scale(1);
+  animation: starDrop 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
+  filter: drop-shadow(0 3px 8px rgba(248,176,0,0.55));
+}
+#mstar-0.earned { animation-delay: 0.15s; }
+#mstar-1.earned { animation-delay: 0.32s; }
+#mstar-2.earned { animation-delay: 0.50s; }
+
+@keyframes starDrop {
+  0%   { transform: scale(0.3) rotate(-25deg); opacity: 0; }
+  65%  { transform: scale(1.25) rotate(6deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(0);        opacity: 1; }
+}
+
+/* -- Bonus pills -- */
+#modal-bonus-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  min-height: 12px;
+  margin: 0 24px 14px;
+}
+
+.m-bonus {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+.m-bonus-rocket  { background: linear-gradient(90deg, #f97316, #ef4444); }
+.m-bonus-gravity { background: linear-gradient(90deg, #06b6d4, #6366f1); }
+.m-bonus-boost   { background: linear-gradient(90deg, #eab308, #f59e0b); color: #111; }
+
+#modal-msg {
+  font-size: 14px;
+  color: #777;
+  margin: 0 24px 22px;
+  min-height: 16px;
+}
+
+/* ===== MODAL BUTTON ===== */
+.modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 36px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(22,163,74,0.4);
+  transition: transform 0.15s, filter 0.15s, box-shadow 0.15s;
+}
+.modal-btn:hover  { filter: brightness(1.08); transform: scale(1.05); box-shadow: 0 6px 20px rgba(22,163,74,0.5); }
+.modal-btn:active { transform: scale(0.97); }
+
+/* ===== SCROLLBAR HIDE ===== */
+::-webkit-scrollbar { display: none; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .corner-btn { width: 46px; height: 46px; }
+  .corner-btn svg { width: 22px; height: 22px; }
+  .btn-clear { left: 70px; }
+  #level-info { font-size: 15px; }
+  #modal-title { font-size: 26px; }
+  .m-star { font-size: 42px; }
+  #total-stars-hud { font-size: 13px; padding: 5px 10px; right: 14px; }
+  #splash-scene { height: 100px; }
+  #splash-car-wrap { width: 112px; height: 60px; }
+  #splash-car-body { width: 112px; }
+  .splash-wheel { width: 29px; height: 29px; top: 22px; }
+  .splash-wheel::after { border-width: 2px; }
+  #splash-wheel-l { left: 25px; }
+  #splash-wheel-r { left: 61px; }
+  #btn-play { font-size: 26px; padding: 13px 44px; }
+}

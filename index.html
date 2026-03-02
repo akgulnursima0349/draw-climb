@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Draw to Climb</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== GİRİŞ EKRANI ===== -->
+  <div id="splash">
+    <div id="splash-inner">
+
+      <p id="splash-sub">✏️ &nbsp;ÇİZ &amp; TIRMAN</p>
+
+      <h1 id="splash-h1">DRAW<br><span class="splash-gradient">TO CLIMB</span></h1>
+
+      <!-- Araba sahnesi -->
+      <div id="splash-scene">
+        <svg id="splash-svg" viewBox="0 0 480 120" preserveAspectRatio="xMidYMid meet">
+          <!-- Çizilmiş yol / rampa -->
+          <path id="splash-road"
+            d="M0,108 C50,108 80,85 118,62 C156,39 192,18 240,15 C288,12 324,34 368,58 C400,74 440,90 480,88"
+            fill="none" stroke="#222" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round"
+            stroke-dasharray="900" stroke-dashoffset="900"/>
+        </svg>
+        <div id="splash-car-wrap">
+          <div class="splash-wheel" id="splash-wheel-l"><img src="wheel.png" alt=""></div>
+          <div class="splash-wheel" id="splash-wheel-r"><img src="wheel.png" alt=""></div>
+          <img id="splash-car-body" src="car-body.png" alt="">
+        </div>
+      </div>
+
+      <button id="btn-play">▶ &nbsp;OYNA</button>
+
+      <div id="splash-stars-row">
+        ★ <span id="splash-stars-num">0</span> toplam yıldız
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Level numarası - orta üst -->
+  <div id="level-info">Bölüm <span id="level-num">1</span></div>
+
+  <!-- Sol alt: Yeniden başlat + Silgi -->
+  <div id="btns-bottom-left">
+    <button id="btn-reset" class="corner-btn btn-reset" title="Yeniden Başlat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 109-9 9 9 0 00-6.36 2.64L3 8"/>
+        <path d="M3 3v5h5"/>
+      </svg>
+    </button>
+    <button id="btn-clear" class="corner-btn btn-clear" title="Son Çizimi Sil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 20H7L3 16l10-10 7 7-2.5 2.5"/>
+        <path d="M6.5 17.5l3-3"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Sağ alt: Başlat butonu -->
+  <button id="btn-start" class="corner-btn btn-start" title="Başlat">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <polygon points="6,4 20,12 6,20"/>
+    </svg>
+    BAŞLAT
+  </button>
+
+  <!-- Special item hint -->
+  <div id="hint-box"></div>
+
+  <!-- Toplam yıldız HUD — sağ üst -->
+  <div id="total-stars-hud">★ <span id="total-stars-num">0</span></div>
+
+  <!-- Level Complete Modal -->
+  <div id="modal-overlay" class="hidden">
+    <div id="modal">
+      <div id="modal-header">
+        <div id="modal-header-emoji">🏆</div>
+        <h2 id="modal-title">Bölüm Tamamlandı!</h2>
+      </div>
+      <div id="modal-stars">
+        <span class="m-star" id="mstar-0">★</span>
+        <span class="m-star" id="mstar-1">★</span>
+        <span class="m-star" id="mstar-2">★</span>
+      </div>
+      <div id="modal-bonus-row"></div>
+      <p id="modal-msg"></p>
+      <button id="btn-next" class="modal-btn">Devam ▶</button>
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <canvas id="game-canvas"></canvas>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
