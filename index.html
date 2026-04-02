@@ -43,15 +43,6 @@
     </div>
   </div>
 
-  <!-- Sol üst: Bölüm menüsü butonu -->
-  <button id="btn-levels-hud" class="corner-btn btn-levels-hud" title="Bölümler">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="6"  x2="21" y2="6"/>
-      <line x1="3" y1="12" x2="21" y2="12"/>
-      <line x1="3" y1="18" x2="21" y2="18"/>
-    </svg>
-  </button>
-
   <!-- Level numarası - orta üst -->
   <div id="level-info">Bölüm <span id="level-num">1</span></div>
 
@@ -82,8 +73,11 @@
   <!-- Special item hint -->
   <div id="hint-box"></div>
 
-  <!-- Toplam yıldız HUD — sağ üst -->
-  <div id="total-stars-hud">★ <span id="total-stars-num">0</span></div>
+  <!-- Sağ üst: yıldız + bölümler butonu -->
+  <div id="hud-top-right">
+    <div id="total-stars-hud">★ <span id="total-stars-num">0</span></div>
+    <button id="btn-levels-hud">BÖLÜMLER</button>
+  </div>
 
   <!-- Level Complete Modal -->
   <div id="modal-overlay" class="hidden">

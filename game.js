@@ -1297,6 +1297,7 @@ function bindUI() {
   document.getElementById('btn-clear').addEventListener('click', undoLastStroke);
   // OYNA — giriş ekranını kapat
   document.getElementById('btn-play').addEventListener('click', () => {
+    closeLevelSelect();   // açık kalmışsa kapat
     const splash = document.getElementById('splash');
     splash.classList.add('fade-out');
     setTimeout(() => { splash.style.display = 'none'; }, 450);
@@ -1317,7 +1318,7 @@ function bindUI() {
   });
 
   document.getElementById('btn-levels-hud').addEventListener('click', openLevelSelect);
-  document.getElementById('btn-levels-splash').addEventListener('click', openLevelSelect);
+  document.getElementById('btn-levels-splash').addEventListener('click', openLevelSelect);  // splash'taki buton
 
   document.getElementById('btn-ls-close').addEventListener('click', closeLevelSelect);
   document.getElementById('level-select-overlay').addEventListener('click', e => {
