@@ -56,11 +56,21 @@ let levelStars = {};          // { levelIndex: bestStars } — localStorage'a ka
 // ─── Canvas ──────────────────────────────────────────────────────────────────
 const canvas = document.getElementById('game-canvas');
 const ctx    = canvas.getContext('2d');
-let W = 0, H = 0;
+
+// Sabit mantıksal çözünürlük — zoom/pencere boyutundan bağımsız oyun dünyası
+const LOGIC_W = 1280;
+const LOGIC_H = 720;
+const W = LOGIC_W;   // artık sabit
+const H = LOGIC_H;
 
 function resizeCanvas() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
+  canvas.width  = LOGIC_W;
+  canvas.height = LOGIC_H;
+  // Canvas'ı ekrana sığdır — en-boy oranını koru, letterbox uygula
+  const s = Math.min(window.innerWidth / LOGIC_W, window.innerHeight / LOGIC_H);
+  canvas.style.width  = LOGIC_W + 'px';
+  canvas.style.height = LOGIC_H + 'px';
+  canvas.style.transform = `translate(-50%, -50%) scale(${s})`;
 }
 
 // ─── Image Loading ────────────────────────────────────────────────────────────
@@ -191,7 +201,11 @@ function initDrawSystem() {
 
 function getPt(e) {
   const r = canvas.getBoundingClientRect();
-  return { x: e.clientX - r.left, y: e.clientY - r.top };
+  // CSS ölçeğinden mantıksal koordinata dönüştür
+  return {
+    x: (e.clientX - r.left) * LOGIC_W / r.width,
+    y: (e.clientY - r.top)  * LOGIC_H / r.height
+  };
 }
 
 function onDS(e) {
@@ -1325,8 +1339,7 @@ function bindUI() {
     if (e.target === document.getElementById('level-select-overlay')) closeLevelSelect();
   });
   window.addEventListener('resize', () => {
-    resizeCanvas();
-    loadLevel(currentLvl);
+    resizeCanvas();   // sadece CSS scale güncellenir, oyun dünyası değişmez
   });
 }
 
