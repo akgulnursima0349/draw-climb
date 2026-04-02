@@ -577,9 +577,11 @@ function loadLevel(n) {
   const PHYS_FLOOR = Math.floor(H / GRID) * GRID;  // örn. H=768 → 750
 
   // Ground — üst yüzeyi tam PHYS_FLOOR'da
+  // Araba (CAT_CAR) zemine çarpmaz; çizimler ve toplar yine de desteklenir.
+  // Araba zemine ulaşırsa düşüp ekrandan çıkar → checkFail offScreen tetiklenir.
   addEnv(Bodies.rectangle(W / 2, PHYS_FLOOR + 25, W * 4, 50, {
     isStatic: true, label: 'ground', friction: 0.6,
-    collisionFilter: { category: CAT_ENV, mask: 0xFFFF }
+    collisionFilter: { category: CAT_ENV, mask: CAT_ENV | CAT_DRAW | CAT_BALL }
   }));
 
   // Left boundary
