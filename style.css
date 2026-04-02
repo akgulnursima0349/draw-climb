@@ -479,6 +479,162 @@ html, body {
 .modal-btn:hover  { filter: brightness(1.08); transform: scale(1.05); box-shadow: 0 6px 20px rgba(22,163,74,0.5); }
 .modal-btn:active { transform: scale(0.97); }
 
+/* ===== MODAL BUTTONS ROW ===== */
+#modal-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.modal-btn-gray {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  box-shadow: 0 4px 16px rgba(75,85,99,0.35);
+}
+.modal-btn-gray:hover { box-shadow: 0 6px 20px rgba(75,85,99,0.48); }
+
+/* ===== HUD BÖLÜMLER BUTONU ===== */
+.btn-levels-hud {
+  top: 14px;
+  left: 14px;
+  background: rgba(0,0,0,0.78);
+  color: #fff;
+}
+.btn-levels-hud svg { stroke: #fff; }
+
+/* ===== SPLASH BÖLÜMLER BUTONU ===== */
+#btn-levels-splash {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 32px;
+  background: transparent;
+  color: #555;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, transform 0.15s;
+  margin-bottom: 10px;
+  animation: splashUp 0.5s ease both 1.55s;
+}
+#btn-levels-splash:hover  { border-color: #aaa; color: #222; transform: scale(1.04); }
+#btn-levels-splash:active { transform: scale(0.97); }
+
+/* ===== BÖLÜM SEÇİM OVERLAY ===== */
+#level-select-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#level-select-overlay.hidden { display: none; }
+
+#level-select-panel {
+  background: #fff;
+  border-radius: 22px;
+  width: min(540px, 94vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 70px rgba(0,0,0,0.32);
+  animation: modalPop 0.32s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+#ls-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+#ls-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: #111;
+}
+#btn-ls-close {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+#btn-ls-close:hover { background: #e5e7eb; color: #111; }
+
+#ls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  padding: 18px;
+  overflow-y: auto;
+}
+
+.ls-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid #f0f0f0;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  background: #fafafa;
+}
+.ls-card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  border-color: #d1d5db;
+}
+.ls-card:active { transform: scale(0.98); }
+
+.ls-card-header {
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 55%, #a855f7 100%);
+  padding: 10px 8px 8px;
+  text-align: center;
+}
+.ls-card-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+.ls-card-body {
+  padding: 8px 6px 10px;
+  text-align: center;
+}
+.ls-card-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ls-stars {
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+.ls-star-on  { color: #f8b000; }
+.ls-star-off { color: #ddd; }
+
 /* ===== SCROLLBAR HIDE ===== */
 ::-webkit-scrollbar { display: none; }
 

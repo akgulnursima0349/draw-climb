@@ -717,15 +717,24 @@ function tickSpecials() {
           if (car) {
             const cx = car.chassis.position.x;
             const cy = car.chassis.position.y;
+            // Mevcut tekerlek offsetlerini chassis merkezine göre al
+            const dwLx = car.wheelL.position.x - cx;
+            const dwLy = car.wheelL.position.y - cy;
+            const dwRx = car.wheelR.position.x - cx;
+            const dwRy = car.wheelR.position.y - cy;
+            // Chassis'i aynı noktada tut, sadece 180° döndür
+            Body.setPosition(car.chassis, { x: cx, y: cy });
             Body.setAngle(car.chassis, car.chassis.angle + Math.PI);
-            // Kısıtların yeni pivot noktalarına göre tekerlekleri yerleştir
-            Body.setPosition(car.wheelL, { x: cx + AXLE_FRONT, y: cy - AXLE_Y });
-            Body.setPosition(car.wheelR, { x: cx - AXLE_REAR,  y: cy - AXLE_Y });
-            // Hızı sıfırla — ani çevirme sonrası stabil kalsın
+            // Tekerlekleri 180° aynalanmış konuma taşı (offset negatife çevrilir)
+            Body.setPosition(car.wheelL, { x: cx - dwLx, y: cy - dwLy });
+            Body.setPosition(car.wheelR, { x: cx - dwRx, y: cy - dwRy });
+            // Tüm hızları sıfırla
             Body.setVelocity(car.chassis, { x: 0, y: 0 });
             Body.setVelocity(car.wheelL,  { x: 0, y: 0 });
             Body.setVelocity(car.wheelR,  { x: 0, y: 0 });
             Body.setAngularVelocity(car.chassis, 0);
+            Body.setAngularVelocity(car.wheelL,  0);
+            Body.setAngularVelocity(car.wheelR,  0);
           }
           sp.active = false;
           if (!gravityBonusGiven) { itemBonusStars += 3; gravityBonusGiven = true; }
@@ -1232,6 +1241,55 @@ function hideModal() {
   document.getElementById('modal-overlay').classList.add('hidden');
 }
 
+// ─── Level Select ─────────────────────────────────────────────────────────────
+function openLevelSelect() {
+  buildLevelSelectGrid();
+  document.getElementById('level-select-overlay').classList.remove('hidden');
+}
+
+function closeLevelSelect() {
+  document.getElementById('level-select-overlay').classList.add('hidden');
+}
+
+function buildLevelSelectGrid() {
+  const grid = document.getElementById('ls-grid');
+  grid.innerHTML = '';
+  // 0..currentLvl arası tüm ulaşılmış bölümleri göster
+  for (let i = 0; i <= currentLvl; i++) {
+    const stars  = levelStars[i] || 0;
+    const lvlDef = getLevel(i);
+    const name   = lvlDef.name || `Bölüm ${i + 1}`;
+
+    const card = document.createElement('div');
+    card.className = 'ls-card';
+    card.innerHTML = `
+      <div class="ls-card-header">
+        <div class="ls-card-num">${i + 1}</div>
+      </div>
+      <div class="ls-card-body">
+        <div class="ls-card-name">${name}</div>
+        <div class="ls-stars">
+          <span class="${stars >= 1 ? 'ls-star-on' : 'ls-star-off'}">★</span>
+          <span class="${stars >= 2 ? 'ls-star-on' : 'ls-star-off'}">★</span>
+          <span class="${stars >= 3 ? 'ls-star-on' : 'ls-star-off'}">★</span>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      closeLevelSelect();
+      hideModal();
+      // Splash ekranını kapat (eğer açıksa)
+      const splash = document.getElementById('splash');
+      if (splash && splash.style.display !== 'none') {
+        splash.classList.add('fade-out');
+        setTimeout(() => { splash.style.display = 'none'; }, 450);
+      }
+      loadLevel(i);
+    });
+    grid.appendChild(card);
+  }
+}
+
 // ─── UI Bindings ──────────────────────────────────────────────────────────────
 function bindUI() {
   document.getElementById('btn-start').addEventListener('click', startGame);
@@ -1251,6 +1309,19 @@ function bindUI() {
     currentLvl++;
     localStorage.setItem('currentLvl', currentLvl);
     loadLevel(currentLvl);
+  });
+
+  document.getElementById('btn-replay').addEventListener('click', () => {
+    hideModal();
+    loadLevel(currentLvl);
+  });
+
+  document.getElementById('btn-levels-hud').addEventListener('click', openLevelSelect);
+  document.getElementById('btn-levels-splash').addEventListener('click', openLevelSelect);
+
+  document.getElementById('btn-ls-close').addEventListener('click', closeLevelSelect);
+  document.getElementById('level-select-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('level-select-overlay')) closeLevelSelect();
   });
   window.addEventListener('resize', () => {
     resizeCanvas();

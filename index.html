@@ -34,6 +34,7 @@
       </div>
 
       <button id="btn-play">▶ &nbsp;OYNA</button>
+      <button id="btn-levels-splash">☰ &nbsp;Bölümler</button>
 
       <div id="splash-stars-row">
         ★ <span id="splash-stars-num">0</span> toplam yıldız
@@ -41,6 +42,15 @@
 
     </div>
   </div>
+
+  <!-- Sol üst: Bölüm menüsü butonu -->
+  <button id="btn-levels-hud" class="corner-btn btn-levels-hud" title="Bölümler">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6"  x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
 
   <!-- Level numarası - orta üst -->
   <div id="level-info">Bölüm <span id="level-num">1</span></div>
@@ -89,7 +99,21 @@
       </div>
       <div id="modal-bonus-row"></div>
       <p id="modal-msg"></p>
-      <button id="btn-next" class="modal-btn">Devam ▶</button>
+      <div id="modal-btns">
+        <button id="btn-replay" class="modal-btn modal-btn-gray">↩ Tekrar</button>
+        <button id="btn-next"   class="modal-btn">Devam ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bölüm Seçim Overlay -->
+  <div id="level-select-overlay" class="hidden">
+    <div id="level-select-panel">
+      <div id="ls-header">
+        <h2 id="ls-title">Bölümler</h2>
+        <button id="btn-ls-close">✕</button>
+      </div>
+      <div id="ls-grid"></div>
     </div>
   </div>
 
